@@ -15,7 +15,7 @@ public class Main {
 		int years = 0;
 		
 		while(moneys < y) {
-			moneys += moneys * p / 100;
+			moneys += (int)(moneys * (p / 100f) * 100f) / 100f;
 			years++;
 		}
 		
