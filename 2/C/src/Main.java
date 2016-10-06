@@ -12,6 +12,8 @@ public class Main {
 		scanner.close();
 		
 		List<Character> chars = new ArrayList<>();
+		for(char ch: word) chars.add(ch);
+		
 		int i = 0;
 		while(i < chars.size()) {
 			char ch = chars.get(i);
