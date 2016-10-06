@@ -15,11 +15,24 @@ public class Main {
 		
 		System.out.println();
 		
+		int rub = money[0] - price[0];
+		int cop = money[1] - price[1];
+		
+		if(rub < 0) {
+			System.out.println("Не хватает");
+			return;
+		}
+		
+		if(cop < 0) {
+			rub--;
+			cop+=100;
+		}
+		
 		System.out.println("Сдача:");
 		System.out.print("• руб ");
-		System.out.println(money[0] - price[0]);
+		System.out.println(rub);
 		System.out.print("• коп ");
-		System.out.print(money[1] - price[1]);
+		System.out.print(cop);
 	}
 	
 	public static int[] askForMoney(Scanner scanner) {
