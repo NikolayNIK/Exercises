@@ -8,7 +8,7 @@ public class Main {
 		Scanner scanner = new Scanner(System.in);
 		
 		System.out.print("Время расчета: ");
-		final int n = scanner.nextInt();
+		final int n = scanner.nextInt() - 1;
 		
 		System.out.print("Время жизни: ");
 		final int m = scanner.nextInt();
@@ -19,7 +19,7 @@ public class Main {
 		
 		List<Rabbit> rabbits = new ArrayList<>();
 		rabbits.add(new Rabbit(m));
-		for(int i = 0; i < n - 1; i++) {
+		for(int i = 0; i < n; i++) {
 			System.out.append("Месяц ");
 			System.out.append(Integer.toString(i + 1));
 			System.out.append("\n До\n");
