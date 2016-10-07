@@ -17,6 +17,7 @@ public class Rabbit {
 	}
 	
 	public boolean isDead() {
+		if(deathAge < 1) return false;
 		return age >= deathAge;
 	}
 	

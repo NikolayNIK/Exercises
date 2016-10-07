@@ -10,8 +10,11 @@ public class Main {
 		System.out.print("Время расчета: ");
 		final int n = scanner.nextInt() - 1;
 		
-		System.out.print("Время жизни: ");
+		System.out.print("Время жизни (<=0 — неограниченное): ");
 		final int m = scanner.nextInt();
+		
+		System.out.print("Производство пар кроликов зрелой парой: ");
+		final int k = scanner.nextInt();
 		
 		System.out.append("\n");
 		
@@ -19,9 +22,9 @@ public class Main {
 		
 		List<Rabbit> rabbits = new ArrayList<>();
 		rabbits.add(new Rabbit(m));
-		for(int i = 0; i < n; i++) {
+		for(int i0 = 0; i0 < n; i0++) {
 			System.out.append("Месяц ");
-			System.out.append(Integer.toString(i + 1));
+			System.out.append(Integer.toString(i0 + 1));
 			System.out.append("\n До\n");
 			for(Rabbit rabbit: rabbits) {
 				System.out.append("  ");
@@ -30,7 +33,7 @@ public class Main {
 			}
 			
 			for(Rabbit rabbit: rabbits.toArray(new Rabbit[rabbits.size()])) { // Костылище
-				if(rabbit.isMature()) rabbits.add(new Rabbit(m));
+				if(rabbit.isMature()) for(int i1 = 0; i1 < k; i1++) rabbits.add(new Rabbit(m));
 				rabbit.age();
 				if(rabbit.isDead()) rabbits.remove(rabbit);
 			}
