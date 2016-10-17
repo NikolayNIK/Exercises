@@ -14,6 +14,7 @@ public class Main {
 	}
 	
 	public static int getCombinations(int n, int k) {
+		if(k == 1) return n;
 		if(k == 0 || n == k) return 1;
 		return getCombinations(n - 1, k - 1) + getCombinations(n - 1, k);
 	}
