@@ -7,15 +7,34 @@ import android.graphics.Rect;
 
 public class GraphicRobot extends Robot {
 	
-	public static final int CELL_SIZE = 128;
+	public static final int CELL_SIZE = 64;
 	public static final int ROBOT_PADDING = 4;
 	
-	public GraphicRobot(int x, int y, Direction dir) {
+	private final MainView view;
+	
+	private MoveTask move;
+	
+	public GraphicRobot(MainView view, int x, int y, Direction dir) {
 		super(x, y, dir);
+		this.view = view;
+	}
+	
+	public void moveTo(int x, int y) {
+		cancelMove();
+		move = new MoveTask(x, y);
+		move.start();
+	}
+	
+	public void cancelMove() {
+		if(move != null) {
+			move.interrupt();
+			while(move.isAlive());
+			move = null;
+		}
 	}
 	
 	public void render(Canvas canvas, Paint paint) {
-		paint.setColor(Color.YELLOW);
+		paint.setColor(Color.argb(128, 128, 128, 128));
 		paint.setStyle(Paint.Style.FILL_AND_STROKE);
 		paint.setStrokeWidth(4);
 		
@@ -44,6 +63,116 @@ public class GraphicRobot extends Robot {
 			case LEFT:
 				canvas.drawCircle(bounds.centerX() - (bounds.width() / 2), bounds.centerY(), ROBOT_PADDING, paint);
 				break;
+		}
+	}
+	
+	public class MoveTask extends Thread {
+		
+		private final int x, y, delay;
+		
+		public MoveTask(int x, int y, int delay) {
+			this.x = x;
+			this.y = y;
+			this.delay = delay;
+		}
+
+		public MoveTask(int x, int y) {
+			this(x, y, 500);
+		}
+
+		@Override
+		public synchronized void run() {
+			while(!Thread.interrupted()) try {
+				Thread.sleep(delay);
+				
+				if(x > getX()) {
+					switch(getDirection()) {
+						case UP:
+							turnRight();
+							view.postInvalidate();
+							continue;
+						case RIGHT:
+							stepForward();
+							view.postInvalidate();
+							continue;
+						case DOWN:
+							turnLeft();
+							view.postInvalidate();
+							continue;
+						case LEFT:
+							turnRight();
+							view.postInvalidate();
+							continue;
+					}
+				}
+				
+				if(x < getX()) {
+					switch(getDirection()) {
+						case UP:
+							turnLeft();
+							view.postInvalidate();
+							continue;
+						case LEFT:
+							stepForward();
+							view.postInvalidate();
+							continue;
+						case DOWN:
+							turnRight();
+							view.postInvalidate();
+							continue;
+						case RIGHT:
+							turnRight();
+							view.postInvalidate();
+							continue;
+					}
+				}
+				
+				if(y > getY()) {
+					switch(getDirection()) {
+						case LEFT:
+							turnRight();
+							view.postInvalidate();
+							continue;
+						case UP:
+							stepForward();
+							view.postInvalidate();
+							continue;
+						case RIGHT:
+							turnLeft();
+							view.postInvalidate();
+							continue;
+						case DOWN:
+							turnRight();
+							view.postInvalidate();
+							continue;
+					}
+				}
+
+				if(y < getY()) {
+					switch(getDirection()) {
+						case LEFT:
+							turnLeft();
+							view.postInvalidate();
+							continue;
+						case DOWN:
+							stepForward();
+							view.postInvalidate();
+							continue;
+						case RIGHT:
+							turnRight();
+							view.postInvalidate();
+							continue;
+						case UP:
+							turnRight();
+							view.postInvalidate();
+							continue;
+					}
+				}
+				
+				break;
+			} catch(InterruptedException e) {
+				break;
+			}
 		}
 	}
 }

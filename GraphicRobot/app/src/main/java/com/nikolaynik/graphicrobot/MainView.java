@@ -7,10 +7,9 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.GestureDetector.OnGestureListener;
+import android.os.Vibrator;
 
 public class MainView extends View implements OnGestureListener {
-
-	public static final float CONTROL_ZONE = 0.3F;
 	
 	private GraphicRobot robot;
 	private Paint paint;
@@ -18,7 +17,7 @@ public class MainView extends View implements OnGestureListener {
 	
 	public MainView(Context context) {
 		super(context);
-		robot = new GraphicRobot(0, 0, Direction.UP);
+		robot = new GraphicRobot(this, 0, 0, Direction.UP);
 		paint = new Paint();
 		gestureDetector = new GestureDetector(this);
 	}
@@ -42,12 +41,12 @@ public class MainView extends View implements OnGestureListener {
 	
 	@Override
 	public boolean onDown(MotionEvent p1) {
+		robot.cancelMove();
 		return true;
 	}
 
 	@Override
 	public void onShowPress(MotionEvent p1) {
-		
 	}
 
 	@Override
@@ -63,7 +62,8 @@ public class MainView extends View implements OnGestureListener {
 
 	@Override
 	public void onLongPress(MotionEvent p1) {
-		
+		((Vibrator)getContext().getSystemService(Context.VIBRATOR_SERVICE)).vibrate(100);
+		robot.moveTo((int)(p1.getX() / GraphicRobot.CELL_SIZE), (int)(p1.getY() / GraphicRobot.CELL_SIZE));
 	}
 
 	@Override
