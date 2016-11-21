@@ -1,4 +1,5 @@
 package com.nikolaynik.graphicrobot;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Color;
@@ -29,6 +30,7 @@ public class GraphicRobot extends Robot {
 		Rect bounds = new Rect(getX() * CELL_SIZE + ROBOT_PADDING, getY() * CELL_SIZE + ROBOT_PADDING, getX() * CELL_SIZE + ROBOT_PADDING + (ROBOT_PADDING * -2 + CELL_SIZE), getY() * CELL_SIZE + ROBOT_PADDING + (ROBOT_PADDING * -2 + CELL_SIZE));
 		canvas.drawRect(bounds, paint);
 		
+		paint.setAntiAlias(true);
 		switch(getDirection()) {
 			case UP:
 				canvas.drawCircle(bounds.centerX(), bounds.centerY() + (bounds.height() / 2), ROBOT_PADDING, paint);
