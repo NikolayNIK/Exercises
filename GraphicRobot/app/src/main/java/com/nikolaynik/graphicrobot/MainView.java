@@ -24,19 +24,14 @@ public class MainView extends View implements OnGestureListener {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		paint.reset();
 		robot.render(canvas, paint);
+		paint.reset();
 		super.onDraw(canvas);
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		if(gestureDetector.onTouchEvent(event)) {
-			invalidate();
-			return true;
-		}
-		
-		return false;
+		return gestureDetector.onTouchEvent(event);
 	}
 	
 	@Override

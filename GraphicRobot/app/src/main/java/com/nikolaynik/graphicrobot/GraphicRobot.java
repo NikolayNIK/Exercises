@@ -8,7 +8,9 @@ import android.graphics.Rect;
 public class GraphicRobot extends Robot {
 	
 	public static final int CELL_SIZE = 64;
-	public static final int ROBOT_PADDING = 4;
+	public static final int ROBOT_PADDING = 6;
+	public static final int ROBOT_COLOR = Color.argb(255, 51, 181, 229);
+	public static final int BORDER_COLOR = Color.argb(128, 128, 128, 128);
 	
 	private final MainView view;
 	
@@ -17,6 +19,24 @@ public class GraphicRobot extends Robot {
 	public GraphicRobot(MainView view, int x, int y, Direction dir) {
 		super(x, y, dir);
 		this.view = view;
+	}
+
+	@Override
+	public void turnLeft() {
+		super.turnLeft();
+		view.postInvalidate();
+	}
+
+	@Override
+	public void turnRight() {
+		super.turnRight();
+		view.postInvalidate();
+	}
+
+	@Override
+	public void stepForward() {
+		super.stepForward();
+		view.postInvalidate();
 	}
 	
 	public void moveTo(int x, int y) {
@@ -34,34 +54,42 @@ public class GraphicRobot extends Robot {
 	}
 	
 	public void render(Canvas canvas, Paint paint) {
-		paint.setColor(Color.argb(128, 128, 128, 128));
+		paint.setColor(BORDER_COLOR);
 		paint.setStyle(Paint.Style.FILL_AND_STROKE);
 		paint.setStrokeWidth(4);
 		
 		for(int x = 0; x < canvas.getWidth(); x += CELL_SIZE)
 			canvas.drawLine(x, 0, x, canvas.getHeight(), paint);
-		
+
 		for(int y = 0; y < canvas.getHeight(); y += CELL_SIZE)
 			canvas.drawLine(0, y, canvas.getWidth(), y, paint);
 		
-		paint.setColor(Color.RED);
+		Rect bounds = new Rect();
+		bounds.left = getX() * CELL_SIZE + ROBOT_PADDING;
+		bounds.top = getY() * CELL_SIZE + ROBOT_PADDING;
+		bounds.right = bounds.left + CELL_SIZE - (2 * ROBOT_PADDING);
+		bounds.bottom = bounds.top + CELL_SIZE - (2 * ROBOT_PADDING);
+		
+		paint.setColor(ROBOT_COLOR);
 		paint.setStyle(Paint.Style.STROKE);
-		Rect bounds = new Rect(getX() * CELL_SIZE + ROBOT_PADDING, getY() * CELL_SIZE + ROBOT_PADDING, getX() * CELL_SIZE + ROBOT_PADDING + (ROBOT_PADDING * -2 + CELL_SIZE), getY() * CELL_SIZE + ROBOT_PADDING + (ROBOT_PADDING * -2 + CELL_SIZE));
+		paint.setStrokeJoin(Paint.Join.ROUND);
+		
 		canvas.drawRect(bounds, paint);
 		
-		paint.setAntiAlias(true);
+		paint.setStyle(Paint.Style.FILL_AND_STROKE);
+		
 		switch(getDirection()) {
 			case UP:
-				canvas.drawCircle(bounds.centerX(), bounds.centerY() + (bounds.height() / 2), ROBOT_PADDING, paint);
-				break;
-			case RIGHT:
-				canvas.drawCircle(bounds.centerX() + (bounds.width() / 2), bounds.centerY(), ROBOT_PADDING, paint);
+				canvas.drawCircle(bounds.centerX(), bounds.bottom, ROBOT_PADDING, paint);
 				break;
 			case DOWN:
-				canvas.drawCircle(bounds.centerX(), bounds.centerY() - (bounds.height() / 2), ROBOT_PADDING, paint);
+				canvas.drawCircle(bounds.centerX(), bounds.top, ROBOT_PADDING, paint);
+				break;
+			case RIGHT:
+				canvas.drawCircle(bounds.right, bounds.centerY(), ROBOT_PADDING, paint);
 				break;
 			case LEFT:
-				canvas.drawCircle(bounds.centerX() - (bounds.width() / 2), bounds.centerY(), ROBOT_PADDING, paint);
+				canvas.drawCircle(bounds.left, bounds.centerY(), ROBOT_PADDING, paint);
 				break;
 		}
 	}
@@ -77,7 +105,7 @@ public class GraphicRobot extends Robot {
 		}
 
 		public MoveTask(int x, int y) {
-			this(x, y, 500);
+			this(x, y, 400);
 		}
 
 		@Override
@@ -89,19 +117,15 @@ public class GraphicRobot extends Robot {
 					switch(getDirection()) {
 						case UP:
 							turnRight();
-							view.postInvalidate();
 							continue;
 						case RIGHT:
 							stepForward();
-							view.postInvalidate();
 							continue;
 						case DOWN:
 							turnLeft();
-							view.postInvalidate();
 							continue;
 						case LEFT:
 							turnRight();
-							view.postInvalidate();
 							continue;
 					}
 				}
@@ -110,19 +134,15 @@ public class GraphicRobot extends Robot {
 					switch(getDirection()) {
 						case UP:
 							turnLeft();
-							view.postInvalidate();
 							continue;
 						case LEFT:
 							stepForward();
-							view.postInvalidate();
 							continue;
 						case DOWN:
 							turnRight();
-							view.postInvalidate();
 							continue;
 						case RIGHT:
 							turnRight();
-							view.postInvalidate();
 							continue;
 					}
 				}
@@ -131,19 +151,15 @@ public class GraphicRobot extends Robot {
 					switch(getDirection()) {
 						case LEFT:
 							turnRight();
-							view.postInvalidate();
 							continue;
 						case UP:
 							stepForward();
-							view.postInvalidate();
 							continue;
 						case RIGHT:
 							turnLeft();
-							view.postInvalidate();
 							continue;
 						case DOWN:
 							turnRight();
-							view.postInvalidate();
 							continue;
 					}
 				}
@@ -152,19 +168,15 @@ public class GraphicRobot extends Robot {
 					switch(getDirection()) {
 						case LEFT:
 							turnLeft();
-							view.postInvalidate();
 							continue;
 						case DOWN:
 							stepForward();
-							view.postInvalidate();
 							continue;
 						case RIGHT:
 							turnRight();
-							view.postInvalidate();
 							continue;
 						case UP:
 							turnRight();
-							view.postInvalidate();
 							continue;
 					}
 				}
