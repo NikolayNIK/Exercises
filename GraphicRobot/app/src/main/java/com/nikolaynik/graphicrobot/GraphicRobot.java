@@ -7,10 +7,11 @@ import android.graphics.Rect;
 
 public class GraphicRobot extends Robot {
 	
-	public static final int CELL_SIZE = 64;
-	public static final int ROBOT_PADDING = 6;
+	public static final int CELL_SIZE = 72;
+	public static final int ROBOT_PADDING = 8;
+	public static final int ROBOT_RADIUS = 4;
 	public static final int ROBOT_COLOR = Color.argb(255, 51, 181, 229);
-	public static final int BORDER_COLOR = Color.argb(128, 128, 128, 128);
+	public static final int BORDER_COLOR = Color.argb(47, 69, 69, 69);
 	
 	private final MainView view;
 	
@@ -58,10 +59,10 @@ public class GraphicRobot extends Robot {
 		paint.setStyle(Paint.Style.FILL_AND_STROKE);
 		paint.setStrokeWidth(4);
 		
-		for(int x = 0; x < canvas.getWidth(); x += CELL_SIZE)
+		for(int x = 0; x <= canvas.getWidth(); x += CELL_SIZE)
 			canvas.drawLine(x, 0, x, canvas.getHeight(), paint);
 
-		for(int y = 0; y < canvas.getHeight(); y += CELL_SIZE)
+		for(int y = 0; y <= canvas.getHeight(); y += CELL_SIZE)
 			canvas.drawLine(0, y, canvas.getWidth(), y, paint);
 		
 		Rect bounds = new Rect();
@@ -73,6 +74,7 @@ public class GraphicRobot extends Robot {
 		paint.setColor(ROBOT_COLOR);
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setStrokeJoin(Paint.Join.ROUND);
+		paint.setAntiAlias(true);
 		
 		canvas.drawRect(bounds, paint);
 		
@@ -80,16 +82,16 @@ public class GraphicRobot extends Robot {
 		
 		switch(getDirection()) {
 			case UP:
-				canvas.drawCircle(bounds.centerX(), bounds.bottom, ROBOT_PADDING, paint);
+				canvas.drawCircle(bounds.centerX(), bounds.bottom, ROBOT_RADIUS, paint);
 				break;
 			case DOWN:
-				canvas.drawCircle(bounds.centerX(), bounds.top, ROBOT_PADDING, paint);
+				canvas.drawCircle(bounds.centerX(), bounds.top, ROBOT_RADIUS, paint);
 				break;
 			case RIGHT:
-				canvas.drawCircle(bounds.right, bounds.centerY(), ROBOT_PADDING, paint);
+				canvas.drawCircle(bounds.right, bounds.centerY(), ROBOT_RADIUS, paint);
 				break;
 			case LEFT:
-				canvas.drawCircle(bounds.left, bounds.centerY(), ROBOT_PADDING, paint);
+				canvas.drawCircle(bounds.left, bounds.centerY(), ROBOT_RADIUS, paint);
 				break;
 		}
 	}
@@ -109,7 +111,7 @@ public class GraphicRobot extends Robot {
 		}
 
 		@Override
-		public synchronized void run() {
+		public void run() {
 			while(!Thread.interrupted()) try {
 				Thread.sleep(delay);
 				

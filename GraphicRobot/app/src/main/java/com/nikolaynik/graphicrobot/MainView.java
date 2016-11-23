@@ -24,7 +24,10 @@ public class MainView extends View implements OnGestureListener {
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-		robot.render(canvas, paint);
+		synchronized(robot) {
+			robot.render(canvas, paint);
+		}
+		
 		paint.reset();
 		super.onDraw(canvas);
 	}
