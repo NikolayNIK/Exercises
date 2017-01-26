@@ -20,7 +20,7 @@
 	<string name="position_x_hint">x</string>
 	<string name="position_y_hint">y</string>
 	<string name="distance_title">Distance:</string>
-	<string name="distance_hint">Distance between relative body and parent body</string>
+	<string name="distance_hint">Orbital height</string>
 	<string name="speed_title">Velocity:</string>
 	<string name="speed_hint">Speed of rotation relatively to parent body</string>
 	<string name="size_title">Size:</string>

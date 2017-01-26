@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="item_new_absolute">Новое абсолютное тело</string>
+	<string name="item_new_relative">Новое относительное тело</string>
+
+	<string name="dialog_new_absolute_title">Новое абсолютное тело</string>
+	<string name="dialog_new_relative_title">Новое относительное тело</string>
+
+	<string name="toast_error_creating_body">Невозможно создать тело:</string>
+
+	<string name="name_title">Название:</string>
+	<string name="name_hint">Обозначает тело</string>
+	<string name="position_title">Положение:</string>
+	<string name="distance_title">Расстояние:</string>
+	<string name="distance_hint">Высота орбиты</string>
+	<string name="speed_title">Скорость:</string>
+	<string name="speed_hint">Скорость поворота относительно родительского тела</string>
+	<string name="size_title">Размер:</string>
+	<string name="size_hint">Радиус тела</string>
+	<string name="color_title">Цвет:</string>
+	<string name="color_hint">Цвет тела</string>
+
+</resources>
