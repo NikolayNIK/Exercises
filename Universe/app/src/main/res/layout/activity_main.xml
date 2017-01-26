@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+	android:orientation="vertical"
+    android:gravity="center">
+
+    <com.nikolaynik.universe.UniverseView
+		android:id="@+id/theuniverse"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+		android:background="@android:color/black" />
+	
+	<SlidingDrawer
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:elevation="20dp"
+		android:handle="@+id/handle"
+		android:content="@android:id/list" >
+		
+		<TextView
+			android:id="@+id/handle"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:elevation="20dp"
+			android:gravity="center"
+			android:text="@string/handle"
+			android:textColor="#ffffff"
+			android:textSize="25sp"
+			android:typeface="monospace"
+			android:background="@color/primary" />
+		
+		<ListView
+			android:id="@android:id/list"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@color/background" />
+		
+	</SlidingDrawer>
+
+</RelativeLayout>

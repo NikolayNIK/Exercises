@@ -67,8 +67,8 @@ public class GearsView extends View implements Runnable {
 			float delta = commutator / 1000f * speed;
 			commutator = 0;
 			
-			angle1 += delta;
-			angle0 -= delta;
+			angle1 -= 2 * delta;
+			angle0 += delta;
 			
 			postInvalidate();
 			past = now;

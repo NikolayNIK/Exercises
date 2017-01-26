@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Universe</string>
+	
+	<string name="handle">•••</string>
+	
+	<string name="item_new_absolute">New Absolute Body</string>
+	<string name="item_new_relative">New Relative Body</string>
+	
+	<string name="dialog_new_absolute_title">New Absolute Body</string>
+	<string name="dialog_new_relative_title">New Relative Body</string>
+	
+	<string name="toast_error_creating_body">Could not create body:</string>
+	
+	<string name="name_title">Name:</string>
+	<string name="name_hint">Name to identify a body</string>
+	<string name="position_title">Position:</string>
+	<string name="position_divider">:</string>
+	<string name="position_x_hint">x</string>
+	<string name="position_y_hint">y</string>
+	<string name="distance_title">Distance:</string>
+	<string name="distance_hint">Distance between relative body and parent body</string>
+	<string name="speed_title">Velocity:</string>
+	<string name="speed_hint">Speed of rotation relatively to parent body</string>
+	<string name="size_title">Size:</string>
+	<string name="size_hint">Radius of body</string>
+	<string name="color_title">Color:</string>
+	<string name="color_hint">Color of body</string>
+
+</resources>
