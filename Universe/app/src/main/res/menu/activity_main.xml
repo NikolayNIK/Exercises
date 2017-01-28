@@ -1,4 +1,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<item
+        android:id="@+id/item_open"
+        android:title="@string/item_open" />
+
+	<item
+        android:id="@+id/item_save"
+        android:title="@string/item_save" />
+
+	<item
+        android:id="@+id/item_center"
+        android:title="@string/item_center" />
     
     <item
         android:id="@+id/item_new_absolute"

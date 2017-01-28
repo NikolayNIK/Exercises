@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Universe</string>
+    <string name="app_name">The Universe</string>
+
+    <string name="activity_main_title">Universe</string>
+    <string name="activity_open_title">Open</string>
+    <string name="activity_save_title">Save</string>
 	
 	<string name="handle">•••</string>
 	
 	<string name="item_new_absolute">New Absolute Body</string>
 	<string name="item_new_relative">New Relative Body</string>
+	<string name="item_open">Open</string>
+	<string name="item_save">Save</string>
+	<string name="item_center">Center</string>
+	<string name="item_edit">Edit</string>
+	<string name="item_remove">Remove</string>
+	<string name="item_new_folder">New Folder</string>
 	
 	<string name="dialog_new_absolute_title">New Absolute Body</string>
 	<string name="dialog_new_relative_title">New Relative Body</string>
+	<string name="dialog_edit_absolute_title">Edit Body</string>
+	<string name="dialog_edit_relative_title">Edit Body</string>
 	
 	<string name="toast_error_creating_body">Could not create body:</string>
+	<string name="toast_error_changing_body">Could not edit body:</string>
 	
 	<string name="name_title">Name:</string>
 	<string name="name_hint">Name to identify a body</string>
 	<string name="position_title">Position:</string>
-	<string name="position_divider">:</string>
+	<string name="position_divider">;</string>
 	<string name="position_x_hint">x</string>
 	<string name="position_y_hint">y</string>
 	<string name="distance_title">Distance:</string>
