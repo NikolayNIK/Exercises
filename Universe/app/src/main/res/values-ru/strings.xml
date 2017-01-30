@@ -7,7 +7,9 @@
 	<string name="item_new_absolute">Новое абсолютное тело</string>
 	<string name="item_new_relative">Новое относительное тело</string>
 	<string name="item_open">Открыть</string>
+	<string name="item_open_last">Открыть последний</string>
 	<string name="item_save">Сохранить</string>
+	<string name="item_clear">Очистить</string>
 	<string name="item_center">Центрировать</string>
 	<string name="item_edit">Редактировать</string>
 	<string name="item_remove">Удалить</string>
@@ -20,6 +22,7 @@
 
 	<string name="toast_error_creating_body">Невозможно создать тело:</string>
 	<string name="toast_error_changing_body">Невозможно редактировать тело:</string>
+	<string name="toast_error_no_focused_body">Нет выбранного тела</string>
 
 	<string name="name_title">Название:</string>
 	<string name="name_hint">Обозначает тело</string>

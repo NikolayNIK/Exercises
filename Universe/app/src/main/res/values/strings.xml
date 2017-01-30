@@ -12,7 +12,9 @@
 	<string name="item_new_absolute">New Absolute Body</string>
 	<string name="item_new_relative">New Relative Body</string>
 	<string name="item_open">Open</string>
+	<string name="item_open_last">Open Last</string>
 	<string name="item_save">Save</string>
+	<string name="item_clear">Clear</string>
 	<string name="item_center">Center</string>
 	<string name="item_edit">Edit</string>
 	<string name="item_remove">Remove</string>
@@ -25,6 +27,7 @@
 	
 	<string name="toast_error_creating_body">Could not create body:</string>
 	<string name="toast_error_changing_body">Could not edit body:</string>
+	<string name="toast_error_no_focused_body">No body focused</string>
 	
 	<string name="name_title">Name:</string>
 	<string name="name_hint">Name to identify a body</string>

@@ -5,8 +5,16 @@
         android:title="@string/item_open" />
 
 	<item
+        android:id="@+id/item_open_last"
+        android:title="@string/item_open_last" />
+
+	<item
         android:id="@+id/item_save"
         android:title="@string/item_save" />
+
+	<item
+        android:id="@+id/item_clear"
+        android:title="@string/item_clear" />
 
 	<item
         android:id="@+id/item_center"

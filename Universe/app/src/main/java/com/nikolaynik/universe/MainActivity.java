@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,11 +30,10 @@ public class MainActivity extends ListActivity implements AdapterView.OnItemLong
 	public static final int REQUEST_OPEN = 69;
 	public static final int REQUEST_SAVE = 6969;
 	
-	private File lastest;
+	private File last;
 	private BodyAdapter adapter;
 	private UniverseView view;
 	private SlidingDrawer drawer;
-	private int selected = -1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +44,8 @@ public class MainActivity extends ListActivity implements AdapterView.OnItemLong
 		super.setListAdapter(adapter = new BodyAdapter());
 		super.getListView().setOnItemLongClickListener(this);
 		
-		lastest = new File(getExternalCacheDir().getParentFile(), "lastest.unv");
-		if(lastest.isFile()) view.open(lastest);
+		last = new File(getExternalFilesDir(null), "last.unv");
+		if(last.isFile()) view.open(last);
 	}
 
 	private AlertDialog getNewRelativeDialog() {
@@ -62,7 +62,8 @@ public class MainActivity extends ListActivity implements AdapterView.OnItemLong
 				try {
 					// Creating a new body
 					// Just do not look here
-					MainActivity.this.view.getBodies().add(new RelativeBody(((EditText)view.findViewById(R.id.edit_name)).getText().toString(), MainActivity.this.view.getBodies().get(selected), Float.valueOf(((EditText)view.findViewById(R.id.edit_distance)).getText().toString()), Float.valueOf(((EditText)view.findViewById(R.id.edit_speed)).getText().toString()), 0, Float.valueOf(((EditText)view.findViewById(R.id.edit_size)).getText().toString()), Color.parseColor(((EditText)view.findViewById(R.id.edit_color)).getText().toString())));
+					if(MainActivity.this.view.getFocus() == null) throw new Exception(getString(R.string.toast_error_no_focused_body));
+					MainActivity.this.view.getBodies().add(new RelativeBody(((EditText)view.findViewById(R.id.edit_name)).getText().toString(), MainActivity.this.view.getFocus(), Float.valueOf(((EditText)view.findViewById(R.id.edit_distance)).getText().toString()), Float.valueOf(((EditText)view.findViewById(R.id.edit_speed)).getText().toString()), 0, Float.valueOf(((EditText)view.findViewById(R.id.edit_size)).getText().toString()), Color.parseColor(((EditText)view.findViewById(R.id.edit_color)).getText().toString())));
 				} catch (Exception e) {
 					Toast.makeText(MainActivity.this, getString(R.string.toast_error_creating_body) + ' ' + e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
 				}
@@ -176,13 +177,20 @@ public class MainActivity extends ListActivity implements AdapterView.OnItemLong
 
 			@Override
 			public boolean onMenuItemClick(MenuItem p1) {
+				drawer.animateClose();
 				switch(p1.getItemId()) {
 					case R.id.item_edit:
 						getEditDialog(body).show();
 						return true;
 					case R.id.item_remove:
-						adapter.remove(body);
-						selected = -1;
+						autosave(new Runnable() {
+
+							@Override
+							public void run() {
+								delete(body);
+							}
+						});
+						
 						return true;
 					default:
 						return false;
@@ -191,21 +199,32 @@ public class MainActivity extends ListActivity implements AdapterView.OnItemLong
 		});
 		return menu;
 	}
+	
+	private void delete(Body body) {
+		adapter.remove(body);
+		if(view.getFocus() == body) view.setFocus(null);
+		for(Body b: view.getBodies().toArray(new Body[view.getBodies().size()])) if(b.getType() == Body.TYPE_RELATIVE && ((RelativeBody)b).getParent() == body) delete(b);
+	}
 
 	@Override
 	protected void onPause() {
-		view.save(lastest);
+		autosave(null);
 		super.onPause();
 	}
 	
-	public void open() {
+	private void open() {
 		if(checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_OPEN);
 		else startActivityForResult(new Intent(this, OpenActivity.class), REQUEST_OPEN);
 	}
 	
-	public void save() {
+	private void save() {
 		if(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_SAVE);
 		else startActivityForResult(new Intent(this,SaveActivity.class), REQUEST_SAVE);
+	}
+	
+	private void autosave(Runnable task) {
+		if(view.getBodies().size() > 0)
+			view.save(last, task);
 	}
 
 	@Override
@@ -222,7 +241,8 @@ public class MainActivity extends ListActivity implements AdapterView.OnItemLong
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		this.selected = position;
+		view.setFocus(adapter.getItem(position));
+		drawer.animateClose();
 		super.onListItemClick(l, v, position, id);
 	}
 	
@@ -238,8 +258,20 @@ public class MainActivity extends ListActivity implements AdapterView.OnItemLong
 			case R.id.item_open:
 				requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_OPEN);
 				return true;
+			case R.id.item_open_last:
+				view.open(last);
+				return true;
 			case R.id.item_save:
 				requestPermissions(new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_SAVE);
+				return true;
+			case R.id.item_clear:
+				autosave(new Runnable() {
+
+					@Override
+					public void run() {
+						adapter.clear();
+					}
+				});
 				return true;
 			case R.id.item_center:
 				view.center();
@@ -258,13 +290,19 @@ public class MainActivity extends ListActivity implements AdapterView.OnItemLong
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if(resultCode == RESULT_OK) {
-			File file = new File(Uri.decode(data.getDataString()).replace("file://", ""));
+			final File file = new File(Uri.decode(data.getDataString()).replace("file://", ""));
 			switch(requestCode) {
 				case REQUEST_OPEN:
-					view.open(file);
+					autosave(new Runnable() {
+
+						@Override
+						public void run() {
+							view.open(file);
+						}
+					});
 					break;
 				case REQUEST_SAVE:
-					view.save(file);
+					view.save(file, null);
 					break;
 			}
 		}

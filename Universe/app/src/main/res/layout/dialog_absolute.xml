@@ -51,7 +51,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_weight="10"
-				android:inputType="numberDecimal"
+				android:inputType="numberDecimal|numberSigned"
 				android:hint="@string/position_x_hint" />
 			
 			<TextView
@@ -65,7 +65,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_weight="10"
-				android:inputType="numberDecimal"
+				android:inputType="numberDecimal|numberSigned"
 				android:hint="@string/position_y_hint" />
 			
 		</LinearLayout>

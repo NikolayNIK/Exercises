@@ -31,6 +31,7 @@ public class UniverseView extends View implements Runnable, GestureDetector.OnGe
 	private final int minDelta, maxDelta;
 	
 	private Thread thread;
+	private Body focus;
 	private float x, y, scale;
 	
 	public UniverseView(Context c) {
@@ -57,18 +58,27 @@ public class UniverseView extends View implements Runnable, GestureDetector.OnGe
 		return bodies;
 	}
 	
+	public Body getFocus() {
+		return focus;
+	}
+	
+	public void setFocus(Body body) {
+		focus = body;
+	}
+	
 	public void center() {
 		x = getWidth() / -2f;
 		y = getHeight() / -2f;
 		scale = 1;
+		focus = null;
 	}
 	
-	public void open(File file) {
-		new OpenTask(file).execute();
+	public OpenTask open(File file) {
+		return (OpenTask)new OpenTask(file).execute();
 	}
 
-	public void save(File file) {
-		new SaveTask(file).execute();
+	public SaveTask save(File file, Runnable task) {
+		return (SaveTask)new SaveTask(file, task).execute();
 	}
 	
 	@Override
@@ -115,6 +125,11 @@ public class UniverseView extends View implements Runnable, GestureDetector.OnGe
 			
 			for(Body body: bodies.toArray(new Body[bodies.size()])) body.update(delta);
 			
+			if(focus != null) {
+				x = getWidth() / -2f + focus.getX() * scale;
+				y = getHeight() / -2f + focus.getY() * scale;
+			}
+			
 			postInvalidate();
 			past = now;
 		}
@@ -144,6 +159,7 @@ public class UniverseView extends View implements Runnable, GestureDetector.OnGe
 	
 	@Override
 	public boolean onDown(MotionEvent p1) {
+		focus = null;
 		return true;
 	}
 
@@ -232,9 +248,16 @@ public class UniverseView extends View implements Runnable, GestureDetector.OnGe
 	public class SaveTask extends AsyncTask {
 		
 		private File file;
+		private Runnable task;
+		private boolean isDone;
 		
-		public SaveTask(File file) {
+		public SaveTask(File file, Runnable task) {
 			this.file = file;
+			this.task = task;
+		}
+		
+		public boolean isDone() {
+			return isDone;
 		}
 
 		@Override
@@ -261,14 +284,19 @@ public class UniverseView extends View implements Runnable, GestureDetector.OnGe
 
 				stream.close();
 				
+				isDone = true;
+				
 				return null;
 			} catch (Exception e) {
+				isDone = true;
+				
 				return e;
 			}
 		}
 
 		@Override
 		protected void onPostExecute(Object result) {
+			if(task != null) task.run();
 			if(result != null) Toast.makeText(getContext(), result.toString(), Toast.LENGTH_LONG).show();
 			super.onPostExecute(result);
 		}
