@@ -1,10 +1,14 @@
 package com.nikolaynik.universe;
 
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import java.nio.ByteBuffer;
 import java.util.List;
 
 public class RelativeBody extends Body {
 
+	public static final float ORBIT_HIGHLIGHT_ANTIFACTOR = 5;
+	
 	private Body parent;
 	private float speed, distance, angle;
 	
@@ -14,6 +18,8 @@ public class RelativeBody extends Body {
 		this.distance = distance;
 		this.angle = angle;
 		this.speed = speed;
+		if(size > ORBIT_HIGHLIGHT_ANTIFACTOR) getPaint().setStrokeWidth(size / ORBIT_HIGHLIGHT_ANTIFACTOR);
+		else getPaint().setStrokeWidth(ORBIT_HIGHLIGHT_ANTIFACTOR);
 	}
 
 	@Override
@@ -37,6 +43,13 @@ public class RelativeBody extends Body {
 	public Body getParent() {
 		return parent;
 	}
+
+	@Override
+	public void setSize(float size) {
+		if(size > ORBIT_HIGHLIGHT_ANTIFACTOR) getPaint().setStrokeWidth(size / ORBIT_HIGHLIGHT_ANTIFACTOR);
+		else getPaint().setStrokeWidth(ORBIT_HIGHLIGHT_ANTIFACTOR);
+		super.setSize(size);
+	}
 	
 	public void setSpeed(float speed) {
 		this.speed = speed;
@@ -44,6 +57,18 @@ public class RelativeBody extends Body {
 	
 	public void setDistance(float distance) {
 		this.distance = distance;
+	}
+
+	@Override
+	public void draw(Canvas canvas) {
+		float x = parent.getX();
+		float y = parent.getY();
+		getPaint().setStyle(Paint.Style.STROKE);
+		getPaint().setAlpha(128);
+		canvas.drawCircle(x, y, distance, getPaint());
+		getPaint().setStyle(Paint.Style.FILL);
+		getPaint().setAlpha(255);
+		super.draw(canvas);
 	}
 	
 	@Override
