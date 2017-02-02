@@ -46,14 +46,15 @@ public class SaveActivity extends Activity implements ListView.OnItemClickListen
 		final EditText edit = new EditText(this);
 		
 		AlertDialog.Builder adb = new AlertDialog.Builder(this);
-		adb.setTitle("New Folder");
+		adb.setTitle(R.string.dialog_new_folder_title);
 		adb.setView(edit);
 		adb.setNegativeButton(android.R.string.cancel, null);
 		adb.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface p1, int p2) {
-				new File(dir, edit.getText().toString()).mkdir();
+				File dir = new File(SaveActivity.this.dir, edit.getText().toString());
+				dir.mkdir();
 				new OpenTask(dir).execute();
 			}
 		});

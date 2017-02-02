@@ -24,6 +24,7 @@
 	<string name="dialog_new_relative_title">New Relative Body</string>
 	<string name="dialog_edit_absolute_title">Edit Body</string>
 	<string name="dialog_edit_relative_title">Edit Body</string>
+	<string name="dialog_new_folder_title">New Folder</string>
 	
 	<string name="toast_error_creating_body">Could not create body:</string>
 	<string name="toast_error_changing_body">Could not edit body:</string>

@@ -19,6 +19,7 @@
 	<string name="dialog_new_relative_title">Новое относительное тело</string>
 	<string name="dialog_edit_absolute_title">Редактировать тело</string>
 	<string name="dialog_edit_relative_title">Редактировать тело</string>
+	<string name="dialog_new_folder_title">Новая папка</string>
 
 	<string name="toast_error_creating_body">Невозможно создать тело:</string>
 	<string name="toast_error_changing_body">Невозможно редактировать тело:</string>

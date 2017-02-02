@@ -83,10 +83,11 @@ public class UniverseView extends View implements Runnable, GestureDetector.OnGe
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		boolean result = scaleGestureDetector.onTouchEvent(event);
-		result |= gestureDetector.onTouchEvent(event);
+		scaleGestureDetector.onTouchEvent(event);
+		if(!scaleGestureDetector.isInProgress())
+			gestureDetector.onTouchEvent(event);
 		
-		return result;
+		return true;
 	}
 
 	@Override
@@ -143,7 +144,13 @@ public class UniverseView extends View implements Runnable, GestureDetector.OnGe
 
 	@Override
 	public boolean onScale(ScaleGestureDetector p1) {
-		scale *= p1.getScaleFactor();
+		float factor = p1.getScaleFactor();
+		scale *= factor;
+		
+		x *= factor;
+		y *= factor;
+
+		
 		return true;
 	}
 
